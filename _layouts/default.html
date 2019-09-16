@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} - Cloud Programming Workshop</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/site.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <div id="layout" class="pure-g">
+      <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+          <h1 class="brand-title">Cloud Workshop</h1>
+          <nav class="nav">
+            <ul class="nav-list">
+              <li class="nav-item"><a href="{{ site.baseurl }}/" class="pure-button">Home</a></li>
+              <li class="nav-item"><a href="{{ site.baseurl }}/search" class="pure-button">Search</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+          <div class="posts">
+            {{ content }}
+          </div>
+
+          <div class="footer">
+            <div class="pure-menu pure-menu-horizontal">
+              <ul id="footer-menu">
+                <li class="pure-menu-item">
+                  <a href="{{ site.baseurl }}/" class="pure-menu-link">Home</a>
+                </li>
+                <li class="pure-menu-separator"/>
+                <li class="pure-menu-item">
+                  <a href="{{ site.github.repository_url }}" class="pure-menu-link">Source</a>
+                </li>
+                <li class="pure-menu-separator"/>
+                <li class="pure-menu-item">
+                  <a href="{{ site.github.repository_url }}/edit/master/{{ page.path }}" class="pure-menu-link">Edit</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

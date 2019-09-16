@@ -1,0 +1,8 @@
+collections:
+  labs:
+    output: true
+  prereqs:
+    output: true
+
+plugins_dir:
+  - jekyll-sitemap

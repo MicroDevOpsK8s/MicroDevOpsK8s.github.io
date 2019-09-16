@@ -1,0 +1,30 @@
+{% if site.labs %}
+  {% assign labs = site.labs %}
+
+  {% for lab in labs %}
+    {% if lab.title == page.title %}
+      {% unless forloop.first %}
+        {% assign prevurl = prev.url %}
+      {% endunless %}
+
+      {% unless forloop.last %}
+        {% assign next = labs[forloop.index] %}
+        {% assign nexturl = next.url %}
+      {% endunless %}
+    {% endif %}
+
+    {% assign prev = lab %}
+  {% endfor %}
+
+  <div class="nav">
+    {% if labs.size > 1 %}
+      {% if prevurl %}
+        <span class="prev"><a href="{{prevurl}}">Previous</a></span>
+      {% endif %}
+      <span>Labs</span>
+      {% if nexturl %}
+        <span class="next"><a href="{{nexturl}}">Next</a></span>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endif %}
