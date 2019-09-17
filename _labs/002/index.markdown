@@ -93,3 +93,5 @@ $ java -jar build/libs/demo-0.0.1-SNAPSHOT.jar
 
 Take some time to see what happens.
 
+## References
+* [SpringBoot Introduction](https://www.youtube.com/playlist?list=PLqq-6Pq4lTTbx8p2oCgcAQGQyqN8XeA1x)

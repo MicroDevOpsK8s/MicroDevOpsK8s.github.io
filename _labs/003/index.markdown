@@ -5,7 +5,7 @@ title: Package the code
 
 In this lab you will learn how to package your code into a docker container and test it.
 
-# Package your code
+## Package your code
 
 1. Create a new file named `Dockerfile` in your projects root directory at `demo/`.
 
@@ -28,6 +28,10 @@ start with a vanilla ubuntu image and install the JVM while building the image t
    <pre>
    docker build -t demoapp --build-arg JAR_FILE=build/libs/demo-0.0.1-SNAPSHOT.jar .
    </pre>
+   
+   where `-t demoapp` is the tag you are providing. You can use this tag to identify your container image and if you are 
+   publishing your image to [Docker Hub](https://hub.docker.com) you need to have a specific naming which is preceded with 
+   your account name or your registry name, e.g. `<user>/demoapp` or `<registry>/demoapp`.
    
 2. The output should be similar to this:
    <pre>
@@ -74,18 +78,21 @@ start with a vanilla ubuntu image and install the JVM while building the image t
    If something isn't the way you expected it, you can delete the image with `docker rmi <image id>` and start over at the 
    previous step.
    
-# Run the container
+## Run the container
 
 1. Running the container requires you to also expose the port of the demo app to the host. Usually, the port is bound to the
 docker daemon and you need to tell it that you want it forwarded to your host machine. Do do this, run:
-<pre>
-docker run -p 8080:8080  demoapp
-</pre>
+    <pre>
+    docker run -p 8080:8080  demoapp
+    </pre>
 
-You should now be able to connect to your app using e.g. `curl`:
-<pre>
-curl -X GET -H 'Content-Type:application/json' localhost:8080/hello
-</pre>
+    You should now be able to connect to your app using e.g. `curl`:
+    <pre>
+    curl -X GET -H 'Content-Type:application/json' localhost:8080/hello
+    </pre>
+    
+    Exercise:
+    Try to make it work in `postman`.
 
-Exercise:
-Try to make it work in `postman`.
+## References
+* [More Docker fun](https://www.katacoda.com/courses/container-runtimes)
