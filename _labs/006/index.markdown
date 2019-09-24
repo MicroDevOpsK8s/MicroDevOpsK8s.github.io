@@ -66,7 +66,7 @@ named [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/
          containers:
            - name: demoapp
              imagePullPolicy: IfNotPresent
-             image: demoapp
+             image: nemoregistrysandbox.azurecr.io/demoapp
              ports:
                - containerPort: 8080
    </pre>
@@ -74,6 +74,14 @@ named [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/
    from the host operating system(yes, your laptop) for security reasons. Our deployment.yml file references an image
    named `demoapp`, which indicates, that it should look in a local registry. The local registry for minikube unfortunately
    is the one within the VM. So now we will turn things around and expose the VM's docker registry to our laptop.
+   To do so, run 
+   <pre>
+   $ eval $(minikube docker-env)
+   </pre>
+   to set your environment to point to minikube's docker registry and re-run the build:
+   <pre>
+   $ docker build -t demoapp --build-arg JAR_FILE=build/libs/demo-0.0.1-SNAPSHOT.jar .
+   </pre>
     
 1. Minikube is running in a virtual machine, so it is isolated from the host (your laptop) and therefore you
    cannot access the ports directly. The easiest way to expose the port is by using the `port-forward`.
@@ -166,7 +174,59 @@ Doing so requires a few steps:
          arguments: -f manifests/deployment.yml
    </pre>
    
-1. TODO: Add imagePullSecrets
+1. You will now discover that your deployment works fine, but looking at the cluster with:
+   <pre>
+   $ kubectl get pods
+   </pre>
+   you will discover that your pod has a state of `ImagePullBackOff` or `ErrImagePull`. If you dig deeper with:
+   <pre>
+   $ kubectl describe pod &lt;pod name&gt; 
+   </pre>
+   the event log will tell you that it failed to pull the docker image, with an authentication problem.
+   To fix this, you need to extend the `deployment.yml` from:
+   <pre>
+   :
+        containers:
+          - name: demoapp
+            imagePullPolicy: IfNotPresent
+            image: nemoregistrysandbox.azurecr.io/demoapp
+            ports:
+              - containerPort: 8080
+   </pre>
+   with the pullsecrets:
+   <pre>
+   :
+        containers:
+          - name: demoapp
+            imagePullPolicy: IfNotPresent
+            image: nemoregistrysandbox.azurecr.io/demoapp
+            ports:
+              - containerPort: 8080
+        imagePullSecrets:
+          - name: acr-auth
+   </pre>
+   Now, that you reference the `act-auth` image pull secrets, you need to define them within the cluster. This can be achieved
+   by different methods. First, by using `kubectl` on the command line. However, this would be a manual step that we 
+   need to avoid (at all cost, to be honest). 
+   <br>So, instead we're creating a YAML file that we can deploy in an automated way. Therefore we need to create a
+   new yaml file that will let us deploy the secrets. 
+1. Creating this yaml file requires that you first login to that docker registry with `docker login`, which then creates
+   a `.docker/config.json` file in your HOME directory. Run the follwing command and copy the output:  
+   <pre>
+   $ cat ~/.docker/config.json | base64
+   </pre>
+   <br>Create a new file named `manifests/pullsecrets.yml` with the following content:
+   <pre>
+   apiVersion: v1
+   kind: Secret
+   metadata:
+     name: acr-pullsecrets
+     namespace: default
+   data:
+     .dockerconfigjson: &lt;your base64 encoded ~/&lt;user&gt;/.docker/config.json file&gt;
+   type: kubernetes.io/dockerconfigjson
+  
+   </pre>
 1. Check-in your changes to git and [push-it](https://giphy.com/gifs/people-help-5YS2veXdeDhsI).
 1. If everything went ok, let's do some `kubectl` magic:
    <pre>

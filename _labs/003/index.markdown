@@ -26,7 +26,7 @@ start with a vanilla ubuntu image and install the JVM while building the image t
 
 2. Now, let's build the docker image. Run
    <pre>
-   docker build -t demoapp --build-arg JAR_FILE=build/libs/demo-0.0.1-SNAPSHOT.jar .
+   $ docker build -t demoapp --build-arg JAR_FILE=build/libs/demo-0.0.1-SNAPSHOT.jar .
    </pre>
    
    where `-t demoapp` is the tag you are providing. You can use this tag to identify your container image and if you are 
