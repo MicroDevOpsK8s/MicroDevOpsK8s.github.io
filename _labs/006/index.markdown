@@ -45,7 +45,7 @@ named [minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/
     kube-system       Active   98s
    </pre>
 
-1. Create a preliminary deployment.yaml in your source code directory's root with the following content:
+1. Create a subdirectory named `manifests` and create preliminary deployment.yaml in that directory with the following content:
    <pre>
    apiVersion: apps/v1
    kind: Deployment
